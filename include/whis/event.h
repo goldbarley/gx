@@ -26,18 +26,18 @@ enum wh_event_type
 struct wh_event
 {
 	enum wh_event_type type;
-	wh_window *window;
+	wh_window_t *window;
 
 	union
 	{
 		struct
 		{
-			wh_keycode id;
+			wh_keycode_t id;
 		} key;
 
 		struct
 		{
-			wh_btncode id;
+			wh_btncode_t id;
 			float x;
 			float y;
 		} ptr;

@@ -227,7 +227,7 @@
 #define WHIS_KEY_RGTALT (0xE6)
 #define WHIS_KEY_RGTGUI (0xE7)
 
-typedef uint16_t wh_keycode;
+typedef uint16_t wh_keycode_t;
 
 #define WHIS_KEY2BTN_OFFSET (0x09)
 #define WHIS_ZR2BTN_OFFSET (0xEF)
@@ -241,7 +241,7 @@ typedef uint16_t wh_keycode;
 #define WHIS_BTN_5 (0xF6) /* MB5 */
 #define WHIS_BTN_X (0xFF) /* MBX */
 
-typedef uint16_t wh_btncode;
+typedef uint16_t wh_btncode_t;
 
 #define WHIS_KEY_ALPHANUM(keycode) \
 	((keycode) >= WHIS_KEY_A && ((keycode) <= WHIS_KEY_0 || (keycode) >= WHIS_KEY_PAD_1 && (keycode) <= WHIS_KEY_PAD_0))

@@ -70,11 +70,11 @@ int event_handler(struct wh_event *evt, uint8_t *actwins)
 
 int main(void)
 {
-	wh_window *window1 = wh_create_window(1280, 720, "XWINDOW1");
+	wh_window_t *window1 = wh_create_window(1280, 720, "XWINDOW1");
 	if (!window1)
 		return -1;
 
-	wh_window *window2 = wh_create_window(800, 600, "XWINDOW2");
+	wh_window_t *window2 = wh_create_window(800, 600, "XWINDOW2");
 	if (!window2)
 		return -1;
 
@@ -84,7 +84,7 @@ int main(void)
 
 	while (actwins)
 	{
-		while (wh_poll_event(&evt))
+		while (wh_poll_for_event(&evt))
 			event_handler(&evt, &actwins);
 	}
 

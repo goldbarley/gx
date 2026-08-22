@@ -33,7 +33,7 @@ static struct whx_winbuf
 
 static struct wh_window *windump = NULL;
 
-wh_window *whx_get_freeaddr(void)
+wh_window_t *whx_get_freeaddr(void)
 {
 	if (!Whx_Winbuf.freemask)
 		return NULL;
@@ -71,7 +71,7 @@ void whx_remove_window(struct wh_window *window)
 }
 
 WHIS_EXPORT
-wh_window *wh_create_window(const uint32_t width, const uint32_t height,
+wh_window_t *wh_create_window(const uint32_t width, const uint32_t height,
 			      const char *title)
 {
 	static xcb_connection_t *cnn;
@@ -178,9 +178,9 @@ static struct wh_window *whx_get_window(xcb_window_t xwin)
 	return NULL;
 }
 
-static wh_bool whx_next_event(struct wh_event *event,
-			      xcb_generic_event_t *(*get_event)
-			      (xcb_connection_t *))
+static wh_bool_t whx_next_event(struct wh_event *event,
+				xcb_generic_event_t *(*get_event)
+				(xcb_connection_t *))
 {
 	if (!event || !Whx_Winbuf.connected)
 		return WHIS_FALSE;
@@ -371,20 +371,20 @@ static wh_bool whx_next_event(struct wh_event *event,
 }
 
 WHIS_EXPORT
-wh_bool wh_poll_event(struct wh_event *event)
+wh_bool_t wh_poll_for_event(struct wh_event *event)
 {
 	return whx_next_event(event, xcb_poll_for_event);
 }
 
 WHIS_EXPORT
-wh_bool wh_wait_event(struct wh_event *event)
+wh_bool_t wh_wait_for_event(struct wh_event *event)
 {
 	return whx_next_event(event, xcb_wait_for_event);
 }
 
 WHIS_EXPORT
-wh_fnresult wh_get_framebuffer_size(wh_window *win, uint32_t *width,
-			      uint32_t *height)
+wh_fnret_t wh_get_framebuffer_size(wh_window_t *win, uint32_t *width,
+				   uint32_t *height)
 {
 	if (!win || !width || !height)
 		return WHIS_INVARG;
@@ -396,20 +396,20 @@ wh_fnresult wh_get_framebuffer_size(wh_window *win, uint32_t *width,
 }
 
 WHIS_EXPORT
-wh_bool wh_window_in_focus(wh_window *window)
+wh_bool_t wh_window_in_focus(wh_window_t *window)
 {
 	return window->focused;
 }
 
 WHIS_EXPORT
-wh_bool wh_ptr_in_window(wh_window *window)
+wh_bool_t wh_ptr_in_window(wh_window_t *window)
 {
 	return window->ptrin;
 }
 
 WHIS_EXPORT
-wh_fnresult wh_resize_window(wh_window *window, const uint32_t width,
-			     const uint32_t height)
+wh_fnret_t wh_resize_window(wh_window_t *window, const uint32_t width,
+			    const uint32_t height)
 {
 	if (!window)
 		return WHIS_INVARG;
@@ -428,7 +428,7 @@ wh_fnresult wh_resize_window(wh_window *window, const uint32_t width,
 }
 
 WHIS_EXPORT
-wh_fnresult wh_sync_window_size(wh_window *window)
+wh_fnret_t wh_sync_window_size(wh_window_t *window)
 {
 	if (!window)
 		return WHIS_INVARG;
@@ -445,7 +445,7 @@ wh_fnresult wh_sync_window_size(wh_window *window)
 }
 
 WHIS_EXPORT
-int8_t wh_get_window_id(wh_window *window)
+int8_t wh_get_window_id(wh_window_t *window)
 {
 	if (!window)
 		return -1;
@@ -460,7 +460,7 @@ uint8_t wh_get_nwin(void)
 }
 
 WHIS_EXPORT
-void wh_destroy_window(wh_window *win)
+void wh_destroy_window(wh_window_t *win)
 {
 	if (!win)
 		return;

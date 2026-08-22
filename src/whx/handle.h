@@ -15,8 +15,8 @@ struct wh_window
 	uint32_t width;
 	uint32_t height;
 	int8_t wid;
-	wh_bool focused;
-	wh_bool ptrin;
+	wh_bool_t focused;
+	wh_bool_t ptrin;
 };
 
 #endif /* WHIS_X11_HANDLE_H_ */
