@@ -24,7 +24,7 @@ static struct whx_winbuf
 	xcb_atom_t wm_del_win;
 	uint64_t freemask;
 	uint64_t usedmask;
-	wh_bool connected;
+	wh_bool_t connected;
 	uint8_t nwin;
 } Whx_Winbuf = {
 	.winbuf = {0},
