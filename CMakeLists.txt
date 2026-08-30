@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15.7)
-project(whiskey C)
+project(gx C)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -12,79 +12,79 @@ endif() # CMAKE_BUILD_TYPE
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-if (NOT WHIS_PLATFORM)
+if (NOT GX_PLATFORM)
 	message(FATAL_ERROR "Error: Platform not specified.")
-endif() # WHIS_PLATFORM
+endif() # GX_PLATFORM
 
-string(TOUPPER "${WHIS_PLATFORM}" WHIS_PLATFORM)
+string(TOUPPER "${GX_PLATFORM}" GX_PLATFORM)
 
 if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
-	set(WHISKEY_IS_TOP_LVL ON)
+	set(GX_IS_TOP_LVL ON)
 else()
-	set(WHISKEY_IS_TOP_LVL OFF)
-endif() # WHISKEY_IS_TOP_LVL
+	set(GX_IS_TOP_LVL OFF)
+endif() # GX_IS_TOP_LVL
 
-if (WHISKEY_IS_TOP_LVL)
-	set(WHIS_DEFAULT_LIB_TYPE "EXEC")
+if (GX_IS_TOP_LVL)
+	set(GX_DEFAULT_LIB_TYPE "EXEC")
 else()
-	set(WHIS_DEFAULT_LIB_TYPE "STATIC")
-endif() # WHISKEY_IS_TOP_LVL
+	set(GX_DEFAULT_LIB_TYPE "STATIC")
+endif() # GX_IS_TOP_LVL
 
-set(WHIS_LIB_TYPE "${WHIS_DEFAULT_LIB_TYPE}" CACHE STRING "Library type.")
+set(GX_LIB_TYPE "${GX_DEFAULT_LIB_TYPE}" CACHE STRING "Library type.")
 
-if (WHIS_LIB_TYPE STREQUAL "SHARED")
+if (GX_LIB_TYPE STREQUAL "SHARED")
 	add_library(${PROJECT_NAME} SHARED)
-	target_compile_definitions(${PROJECT_NAME} PUBLIC WHIS_LIB_SHARED)
-elseif (WHIS_LIB_TYPE STREQUAL "EXEC")
+	target_compile_definitions(${PROJECT_NAME} PUBLIC GX_LIB_SHARED)
+elseif (GX_LIB_TYPE STREQUAL "EXEC")
 	add_executable(${PROJECT_NAME}
 		${CMAKE_CURRENT_SOURCE_DIR}/tests/test.c)
-	target_compile_definitions(${PROJECT_NAME} PUBLIC WHIS_LIB_EXEC)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC GX_LIB_EXEC)
 else ()
 	add_library(${PROJECT_NAME} STATIC)
-	target_compile_definitions(${PROJECT_NAME} PUBLIC WHIS_LIB_STATIC)
-endif() # WHIS_LIB_TYPE
+	target_compile_definitions(${PROJECT_NAME} PUBLIC GX_LIB_STATIC)
+endif() # GX_LIB_TYPE
 
-if (WHIS_PLATFORM STREQUAL "X11")
+if (GX_PLATFORM STREQUAL "X11")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC
-		WHIS_PLATFORM_X11
+		GX_PLATFORM_X11
 		VK_USE_PLATFORM_XCB_KHR)
 	find_package(PkgConfig REQUIRED)
 	pkg_check_modules(XCB REQUIRED xcb)
-elseif (WHIS_PLATFORM STREQUAL "WAYLAND")
+elseif (GX_PLATFORM STREQUAL "WAYLAND")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC
-		WHIS_PLATFORM_WAYLAND
+		GX_PLATFORM_WAYLAND
 		VK_USE_PLATFORM_WAYLAND_KHR)
-endif() # WHIS_PLATFORM
+endif() # GX_PLATFORM
 
 if (WIN32)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC
-		WHIS_PLATFORM_WIN32
+		GX_PLATFORM_WIN32
 		VK_USE_PLATFORM_WIN32_KHR)
 endif() # WIN32
 
-if (WHIS_INCLUDE_TESTS)
+if (GX_INCLUDE_TESTS)
 	target_include_directories(${PROJECT_NAME} PRIVATE
 		${CMAKE_CURRENT_SOURCE_DIR}/tests)
 	target_sources(${PROJECT_NAME} PRIVATE
 		${CMAKE_CURRENT_SOURCE_DIR}/tests/test.c)
-endif() # WHIS_INCLUDE_TESTS
+endif() # GX_INCLUDE_TESTS
 
 # Core files
 target_include_directories(${PROJECT_NAME} PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 target_sources(${PROJECT_NAME} PRIVATE
-	${CMAKE_CURRENT_SOURCE_DIR}/src/whis/linux.c)
+	${CMAKE_CURRENT_SOURCE_DIR}/src/gx/linux.c)
 
-if (WHIS_PLATFORM STREQUAL "X11")
+if (GX_PLATFORM STREQUAL "X11")
 	target_link_libraries(${PROJECT_NAME} PRIVATE ${XCB_LIBRARIES})
 
 	target_include_directories(${PROJECT_NAME} PRIVATE ${XCB_INCLUDE_DIRS})
 
 	target_sources(${PROJECT_NAME} PRIVATE
-		${CMAKE_CURRENT_SOURCE_DIR}/src/whx/util.c
-		${CMAKE_CURRENT_SOURCE_DIR}/src/whx/vulkan.c
-		${CMAKE_CURRENT_SOURCE_DIR}/src/whx/window.c)
+		${CMAKE_CURRENT_SOURCE_DIR}/src/gxx/util.c
+		${CMAKE_CURRENT_SOURCE_DIR}/src/gxx/vulkan.c
+		${CMAKE_CURRENT_SOURCE_DIR}/src/gxx/window.c)
 endif () # Platform X11
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Vulkan::Vulkan)

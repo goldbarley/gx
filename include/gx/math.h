@@ -1,17 +1,16 @@
-#ifndef WHIS_MATH_H_
-#define WHIS_MATH_H_ 1
-
-#include "attr.h"
+#ifndef GX_MATH_H_
+#define GX_MATH_H_ 1
 
 #include <stdint.h>
 
 #if defined(__GNUC__) || defined(__clang__)
-#define WHIS_CTZ(n) __builtin_ctz(n)
-#define WHIS_CTZ64(n) __builtin_ctzll(n)
+#define GX_CTZ(n) __builtin_ctz(n)
+#define GX_CTZ64(n) __builtin_ctzll(n)
 #else
 
-WHIS_INLINE WHIS_EXPORT
-uint8_t wh_ctz_fallback(uint32_t n)
+#include "attr.h"
+GX_INLINE GX_API
+uint8_t gx_ctz_fallback(uint32_t n)
 {
 	if (!n)
 		return 32;
@@ -23,8 +22,8 @@ uint8_t wh_ctz_fallback(uint32_t n)
 	return hash[(uint32_t)((n & -n) * UINT32_C(0x077CB531)) >> 27];
 }
 
-WHIS_INLINE WHIS_EXPORT
-uint8_t wh_ctz64_fallback(uint64_t n)
+GX_INLINE GX_API
+uint8_t gx_ctz64_fallback(uint64_t n)
 {
 	if (!n)
 		return 64;
@@ -38,13 +37,13 @@ uint8_t wh_ctz64_fallback(uint64_t n)
 	return hash[(uint64_t)((n & -n) * UINT64_C(0x03F79D71B4CB0A89)) >> 58];
 }
 
-#define WHIS_CTZ(n) wh_ctz_fallback(n)
-#define WHIS_CTZ64(n) wh_ctz64_fallback(n)
+#define GX_CTZ(n) gx_ctz_fallback(n)
+#define GX_CTZ64(n) gx_ctz64_fallback(n)
 #endif /* Compilers */
 
-#define WHIS_SET_BIT64(m, i) \
+#define GX_SET_BIT64(m, i) \
 	((m) |= (UINT64_C(1) << (i)))
-#define WHIS_CLR_BIT64(m, i) \
+#define GX_CLR_BIT64(m, i) \
 	((m) &= ~(UINT64_C(1) << (i)))
 
-#endif /* WHIS_MATH_H_ */
+#endif /* GX_MATH_H_ */

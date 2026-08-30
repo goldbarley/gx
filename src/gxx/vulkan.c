@@ -1,16 +1,17 @@
 #include "handle.h"
-#include "whis/attr.h"
+#include "gx/attr.h"
+#include "gx/vulkan.h"
 
 #include <vulkan/vulkan.h>
 
-WHIS_EXPORT
-wh_fnret_t wh_create_vulkan_surface(VkSurfaceKHR *surface, wh_window_t *window,
+GX_API
+gx_fnret_t gx_create_vulkan_surface(VkSurfaceKHR *surface, gx_window_t *window,
 				    VkInstance instance,
-				    PFN_vkCreateXcbSurfaceKHR fp,
-				    VkAllocationCallbacks *allocator)
+				    GX_VULKAN_CREATE_SURFACE_FP fp,
+				    const VkAllocationCallbacks *allocator)
 {
 	if (!surface || !window)
-		return WHIS_INVARG;
+		return GX_INVALID_ARGUMENT;
 
 	VkResult vkres = VK_SUCCESS;
 
@@ -23,7 +24,7 @@ wh_fnret_t wh_create_vulkan_surface(VkSurfaceKHR *surface, wh_window_t *window,
 
 	vkres = fp(instance, &createinfo, allocator, surface);
 	if (vkres != VK_SUCCESS)
-		return WHIS_FAILURE;
+		return GX_FAILURE;
 
-	return WHIS_SUCCESS;
+	return GX_SUCCESS;
 }
