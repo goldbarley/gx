@@ -8,7 +8,8 @@ typedef enum gx_fnret
 	GX_SUCCESS = 0,
 	GX_INCOMPLETE = 1,
 	GX_FAILURE = -1,
-	GX_INVALID_ARGUMENT = -2
+	GX_INVALID_ARGUMENT = -2,
+	GX_BUFFER_OVERFLOW = -3
 } gx_fnret_t;
 
 typedef struct gx_window gx_window_t;
